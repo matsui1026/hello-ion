@@ -16,7 +16,7 @@ header .s{font-size:12px;color:#8A8F98}
 .tab{border:1px solid #C7CBD1;background:#fff;border-radius:8px 8px 0 0;margin-right:6px;
      padding:9px 14px;font-size:14px;font-weight:700;color:#8A8F98;cursor:pointer}
 .tab.on{background:#1F3A5F;color:#fff;border-color:#1F3A5F}
-.wrap{max-width:920px;margin:0 auto;padding:0 12px 40px}
+.wrap{max-width:940px;margin:0 auto;padding:0 12px 40px}
 .panel{display:none}.panel.on{display:block}
 .scenebar{display:flex;flex-wrap:wrap;margin:12px 0 8px}
 .sb{border:1px solid #C7CBD1;background:#fff;border-radius:999px;padding:7px 13px;
@@ -33,7 +33,7 @@ svg{display:block;width:100%;height:auto}
 button.btn{border:1px solid #1F3A5F;background:#fff;color:#1F3A5F;margin:0 10px 6px 0;
    border-radius:8px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer}
 button.btn.on{background:#1F3A5F;color:#fff}
-input[type=range]{width:210px;max-width:56vw;vertical-align:middle}
+input[type=range]{width:230px;max-width:58vw;vertical-align:middle}
 .note{font-size:13px;color:#444;background:#F5F2EC;border-radius:8px;
       padding:10px 12px;margin:10px 0;min-height:18px}
 .note b{color:#1F3A5F}
@@ -43,7 +43,7 @@ input[type=range]{width:210px;max-width:56vw;vertical-align:middle}
           vertical-align:-1px;margin-right:4px}
 .grid4{display:flex;flex-wrap:wrap;margin-top:10px;margin-right:-8px}
 .gcard{border:1px solid #C7CBD1;border-radius:8px;padding:6px 6px 2px;
-       flex:1 1 150px;margin:0 8px 8px 0}
+       flex:1 1 155px;margin:0 8px 8px 0}
 .gcard h4{margin:0 0 2px;font-size:13px;text-align:center}
 .cnt{text-align:center;font-size:11px;color:#8A8F98;margin-bottom:2px}
 .readout{font-size:13px;margin:10px 0}
@@ -69,7 +69,7 @@ footer{border-top:1px solid #C7CBD1;margin-top:24px;padding:12px;
 <div class="panel on" id="p0">
   <div class="scenebar" id="scenebar"></div>
   <div class="stage">
-    <svg id="sv1" viewBox="0 0 760 430"></svg>
+    <svg id="sv1" viewBox="0 0 760 470"></svg>
     <div class="keybar">
       <span class="lbl">電子が流れ込む電極 ＝</span>
       <span class="val" id="kname">－</span>
@@ -78,7 +78,7 @@ footer{border-top:1px solid #C7CBD1;margin-top:24px;padding:12px;
   </div>
   <div class="ctrl">
     <button class="btn" id="play1">一時停止</button>
-    <button class="btn" id="cur1">電流の向きを表示</button>
+    <button class="btn on" id="cur1">電流の向きを表示</button>
     <label style="font-size:13px;color:#444">速さ
       <input type="range" id="spd1" min="20" max="220" value="100"></label>
   </div>
@@ -94,7 +94,7 @@ footer{border-top:1px solid #C7CBD1;margin-top:24px;padding:12px;
 <div class="panel" id="p1">
   <div class="scenebar" id="scenebar2"></div>
   <div class="stage">
-    <svg id="sv2" viewBox="0 0 760 300"></svg>
+    <svg id="sv2" viewBox="0 0 760 432"></svg>
     <div class="keybar">
       <span class="lbl">加えた量</span>
       <span class="val" id="kvol">0</span>
@@ -104,7 +104,8 @@ footer{border-top:1px solid #C7CBD1;margin-top:24px;padding:12px;
   <div class="ctrl">
     <label style="font-size:13px;color:#444;margin-right:12px">加える量
       <input type="range" id="vol" min="0" max="20" value="0" step="1"></label>
-    <button class="btn" id="auto2">自動で流す</button>
+    <button class="btn" id="auto2">少しずつ加える</button>
+    <button class="btn" id="reset2">最初にもどす</button>
     <button class="btn" id="gonly">グラフだけ表示</button>
   </div>
   <div class="readout" id="ro2"></div>
@@ -132,6 +133,7 @@ var CP = "#C25B45", CM = "#3F6E9E", CE = "#2B2F36", CMT = "#8C7B62",
     INK = "#1F3A5F", TER = "#B5533C", SLA = "#4E6E8E",
     G1 = "#8A8F98", G2 = "#C7CBD1", G3 = "#E4E6EA";
 
+/* ==================== TAB 1 ==================== */
 var SCENES = [
  {name:"塩化銅の電気分解", power:true,
   liquid:"塩化銅水溶液　CuCl\u2082 \u2192 Cu\u00B2\u207A + 2Cl\u207B",
@@ -163,9 +165,9 @@ var SCENES = [
   depositTxt:"銅 Cu が付着", keyname:"\uFF0B極（銅板）",
   note:"亜鉛板が溶けて電子を出し、銅板に流れ込む。銅板では Cu\u00B2\u207A が電子を2個受け取って銅になり、<b>付着する</b>。塩酸の電池とのちがいは、電子を受け取る相手が H\u207A か Cu\u00B2\u207A かだけ。セロハンは、イオンだけが通れるしきり。"}
 ];
-var sc = 0, playing = true, showCur = false, speed = 1, parts = [];
-var BX = 150, BY = 150, BW = 460, BH = 200;
-var EXL = BX + 70, EXR = BX + BW - 70, EW = 26, EY = BY - 20, EH = BH + 10, WY = 66;
+var sc = 0, playing = true, showCur = true, speed = 1, parts = [], activeTab = 0;
+var BX = 150, BY = 192, BW = 460, BH = 200;
+var EXL = BX + 70, EXR = BX + BW - 70, EW = 26, EY = BY - 20, EH = BH + 10, WY = 108;
 
 var sbEl = document.getElementById("scenebar");
 (function () {
@@ -200,14 +202,33 @@ function newPart(io, S) {
     tx: tx, xa: xa, xb: xb, wob: Math.random() * 6.28};
 }
 
+function arrow(y, toLeft, color, label, sub) {
+  var g = el("g", {}), x1, x2, cx = 380;
+  if (toLeft) { x1 = cx + 78; x2 = cx - 78; } else { x1 = cx - 78; x2 = cx + 78; }
+  g.appendChild(el("path", {d:"M" + x1 + " " + y + " L" + x2 + " " + y,
+    fill:"none", stroke:color, "stroke-width":3.4,
+    "marker-end":"url(" + (color === SLA ? "#ahS" : "#ahE") + ")"}));
+  g.appendChild(txt(cx, y - 9, label, 12.5, color, 700));
+  if (sub) { g.appendChild(txt(cx + 152, y + 4, sub, 11, G1, 400)); }
+  return g;
+}
+
 function build1() {
-  var S = SCENES[sc], i, j, defs, mk, g, sides, x, e, gain, dir, yy;
+  var S = SCENES[sc], i, j, defs, g, sides, x, e, gain;
   while (SV.firstChild) { SV.removeChild(SV.firstChild); }
   defs = el("defs", {});
-  mk = el("marker", {id:"ah", markerWidth:9, markerHeight:9, refX:8, refY:4.5, orient:"auto"});
-  mk.appendChild(el("path", {d:"M0 0 L9 4.5 L0 9 z", fill:SLA}));
-  defs.appendChild(mk);
+  var mk1 = el("marker", {id:"ahS", markerWidth:9, markerHeight:9, refX:8, refY:4.5, orient:"auto"});
+  mk1.appendChild(el("path", {d:"M0 0 L9 4.5 L0 9 z", fill:SLA}));
+  var mk2 = el("marker", {id:"ahE", markerWidth:9, markerHeight:9, refX:8, refY:4.5, orient:"auto"});
+  mk2.appendChild(el("path", {d:"M0 0 L9 4.5 L0 9 z", fill:CE}));
+  defs.appendChild(mk1); defs.appendChild(mk2);
   SV.appendChild(defs);
+
+  /* 電子の流れ／電流の向き（常に対で表示） */
+  SV.appendChild(arrow(62, !S.gainRight, CE, "電子の流れ", "実際に動いているのは電子"));
+  if (showCur) {
+    SV.appendChild(arrow(26, S.gainRight, SLA, "電流の向き", "決めごと。電子と逆向き"));
+  }
 
   SV.appendChild(el("rect", {x:BX, y:BY, width:BW, height:BH, fill:"#EAF1F6",
     stroke:G2, "stroke-width":2, rx:4}));
@@ -223,13 +244,17 @@ function build1() {
       SV.appendChild(el("rect", {x:x - EW / 2 - 6, y:EY - 6, width:EW + 12, height:EH + 12,
         fill:"none", stroke:TER, "stroke-width":3, rx:5}));
     }
-    SV.appendChild(txt(x, EY - 16, e.pol + " " + e.name, 15, gain ? TER : INK, 700));
+    var lb = e.pol + " " + e.name, lw = lb.length * 8 + 10;
+    SV.appendChild(el("rect", {x:x - lw / 2, y:EY - 26, width:lw, height:16, fill:"#fff"}));
+    SV.appendChild(txt(x, EY - 14, lb, 15, gain ? TER : INK, 700));
   }
   SV.appendChild(el("path", {d:"M" + EXL + " " + EY + " L" + EXL + " " + WY +
     " L" + EXR + " " + WY + " L" + EXR + " " + EY,
     fill:"none", stroke:CE, "stroke-width":2.5}));
+
   g = el("g", {id:"pl"});
   SV.appendChild(g);
+
   if (S.power) {
     SV.appendChild(el("rect", {x:332, y:WY - 19, width:96, height:38, fill:"#fff",
       stroke:INK, "stroke-width":2, rx:4}));
@@ -238,12 +263,6 @@ function build1() {
     SV.appendChild(el("circle", {cx:380, cy:WY, r:21, fill:"#fff", stroke:INK, "stroke-width":2}));
     SV.appendChild(txt(380, WY + 6, "M", 16, INK, 700));
     SV.appendChild(txt(380, WY - 30, "モーター", 12, G1));
-  }
-  if (showCur) {
-    dir = S.gainRight ? -1 : 1; yy = WY - 46;
-    SV.appendChild(el("path", {d:"M" + (380 + 70 * dir) + " " + yy + " L" + (380 - 70 * dir) + " " + yy,
-      fill:"none", stroke:SLA, "stroke-width":3, "marker-end":"url(#ah)"}));
-    SV.appendChild(txt(380, yy - 10, "電流の向き（電子と逆）", 12, SLA, 700));
   }
   SV.appendChild(txt(380, BY + BH + 64, S.liquid, 13, "#444"));
 
@@ -333,8 +352,10 @@ document.getElementById("cur1").onclick = function () {
 };
 document.getElementById("spd1").oninput = function () { speed = this.value / 100; };
 
+/* ==================== TAB 2 ==================== */
 var MODES = [
  {name:"塩酸 ＋ 水酸化ナトリウム水溶液", max:20, neutral:10, ymax:20,
+  beaker:"うすい塩酸", add:"水酸化ナトリウム水溶液",
   eq:"HCl + NaOH \u2192 NaCl + H\u2082O",
   species:[{sym:"H\u207A", c:"p", f:function (t) { return Math.max(10 - t, 0); }},
            {sym:"Cl\u207B", c:"m", f:function (t) { return 10; }},
@@ -343,6 +364,7 @@ var MODES = [
   water:function (t) { return Math.min(t, 10); }, precip:null,
   note:"<b>Cl\u207B が変わらない</b>のがポイント。Na\u207A と結びついても、塩化ナトリウムは水にとけて電離したままだから、数は減らない。減るのは、水になって消える H\u207A と OH\u207B だけ。"},
  {name:"硫酸 ＋ 水酸化バリウム水溶液", max:10, neutral:5, ymax:10,
+  beaker:"うすい硫酸", add:"水酸化バリウム水溶液",
   eq:"H\u2082SO\u2084 + Ba(OH)\u2082 \u2192 BaSO\u2084\u2193 + 2H\u2082O",
   species:[{sym:"H\u207A", c:"p", f:function (t) { return Math.max(10 - 2 * t, 0); }},
            {sym:"SO\u2084\u00B2\u207B", c:"m", f:function (t) { return Math.max(5 - t, 0); }},
@@ -350,9 +372,9 @@ var MODES = [
            {sym:"OH\u207B", c:"m", f:function (t) { return Math.max(2 * t - 10, 0); }}],
   water:function (t) { return Math.min(2 * t, 10); },
   precip:function (t) { return Math.min(t, 5); },
-  note:"こちらは <b>SO\u2084\u00B2\u207B も減る</b>。硫酸バリウムが水にとけない白い沈殿になるから。中性のとき<b>イオンがほぼゼロ</b>になり、電流が流れなくなる ── ここがよく問われる。"}
+  note:"こちらは <b>SO\u2084\u00B2\u207B も減る</b>。硫酸バリウムが水にとけない白い沈殿になるから。中性のとき<b>イオンがほぼゼロ</b>になり、電流が流れなくなる \u2500\u2500 ここがよく問われる。"}
 ];
-var md = 0, vol = 0, autoRun = false, gOnly = false;
+var md = 0, vol = 0, autoRun = false, gOnly = false, dropT = 0, splash = 0;
 var sb2El = document.getElementById("scenebar2");
 (function () {
   var i;
@@ -374,60 +396,146 @@ var sb2El = document.getElementById("scenebar2");
 })();
 
 var SV2 = document.getElementById("sv2");
-function draw2() {
-  var M = MODES[md], T = vol, i, j, n, stName, stCol;
-  document.getElementById("kvol").innerHTML = String(T);
-  if (T < M.neutral) { stName = "酸性"; stCol = "#E8B24A"; }
-  else if (T === M.neutral) { stName = "中性"; stCol = "#5AA469"; }
-  else { stName = "アルカリ性"; stCol = "#4E6E8E"; }
-  document.getElementById("kstate").innerHTML = stName + "\u3000\u2500\u2500 " +
-    (T < M.neutral ? "H\u207A が残っている" :
-     (T === M.neutral ? "H\u207A も OH\u207B もない" : "OH\u207B がふえていく"));
+/* 器具の座標 */
+var BKX = 96, BKY = 148, BKW = 182, BKH = 232;      /* ビーカー */
+var BUX = 187, BUY = 22, BUH = 88, BUW = 22;        /* ビュレット */
+var TIPY = BUY + BUH + 24;
 
+function stateOf(M, T) {
+  if (T < M.neutral) { return ["酸性", "#E8B24A", "H\u207A が残っている"]; }
+  if (T === M.neutral) { return ["中性", "#5AA469", "H\u207A も OH\u207B もない"]; }
+  return ["アルカリ性", "#4E6E8E", "OH\u207B がふえていく"];
+}
+
+function surfaceY(M, T) {
+  var h = 112 + 80 * (T / M.max);
+  return BKY + BKH - h;
+}
+
+function drawVessel() {
+  var M = MODES[md], T = vol, i, j, n, st = stateOf(M, T);
   while (SV2.firstChild) { SV2.removeChild(SV2.firstChild); }
-  if (!gOnly) {
-    var bx = 40, by = 34, bw = 330, bh = 222, list = [], cols = 6, cw, lim, r, c, x, y, fl, np, yy;
-    SV2.appendChild(el("rect", {x:bx, y:by, width:bw, height:bh, fill:stCol, opacity:0.16,
-      stroke:G2, "stroke-width":2, rx:4}));
-    SV2.appendChild(txt(bx + bw / 2, by - 12, M.eq, 13, INK, 700));
-    for (i = 0; i < M.species.length; i++) {
-      n = Math.round(M.species[i].f(T));
-      for (j = 0; j < n; j++) { list.push({sym:M.species[i].sym, c:M.species[i].c}); }
+  if (gOnly) { return; }
+  var sy = surfaceY(M, T);
+
+  /* --- ビュレット --- */
+  SV2.appendChild(el("rect", {x:BUX - BUW / 2, y:BUY, width:BUW, height:BUH,
+    fill:"#fff", stroke:G1, "stroke-width":1.4, rx:2}));
+  var remTop = BUY + 4 + (BUH - 12) * (T / M.max);
+  SV2.appendChild(el("rect", {x:BUX - BUW / 2 + 2, y:remTop, width:BUW - 4,
+    height:(BUY + BUH - 2) - remTop, fill:"#BFD8E8", opacity:0.9}));
+  for (i = 1; i < 6; i++) {
+    SV2.appendChild(el("line", {x1:BUX + BUW / 2 - 7, y1:BUY + BUH * i / 6,
+      x2:BUX + BUW / 2, y2:BUY + BUH * i / 6, stroke:G1, "stroke-width":0.9}));
+  }
+  SV2.appendChild(el("rect", {x:BUX - 9, y:BUY + BUH, width:18, height:12,
+    fill:"#fff", stroke:G1, "stroke-width":1.4, rx:2}));
+  SV2.appendChild(el("path", {d:"M" + (BUX - 4) + " " + (BUY + BUH + 12) +
+    " L" + BUX + " " + (TIPY - 4) + " L" + (BUX + 4) + " " + (BUY + BUH + 12) + " Z",
+    fill:"#fff", stroke:G1, "stroke-width":1.2}));
+  SV2.appendChild(txt(BUX + 84, BUY + 16, "加える液", 11.5, G1));
+  SV2.appendChild(txt(BUX + 84, BUY + 32, M.add, 12.5, INK, 700));
+  SV2.appendChild(txt(BUX + 84, BUY + 50, "少しずつ加えていく", 11, G1));
+
+  /* --- しずく --- */
+  if (T < M.max) {
+    for (i = 0; i < 2; i++) {
+      var ph = dropT + i * 0.5;
+      while (ph > 1) { ph -= 1; }
+      var dy = TIPY + (sy - 6 - TIPY) * ph;
+      SV2.appendChild(el("ellipse", {cx:BUX, cy:dy, rx:4.2, ry:5.6,
+        fill:"#BFD8E8", stroke:SLA, "stroke-width":0.8}));
     }
-    n = Math.round(M.water(T));
-    for (j = 0; j < n; j++) { list.push({sym:"H\u2082O", c:"w"}); }
-    cw = bw / cols; lim = Math.min(list.length, 36);
-    for (i = 0; i < lim; i++) {
-      r = Math.floor(i / cols); c = i % cols;
-      x = bx + cw * (c + 0.5); y = by + 28 + r * 33;
-      fl = list[i].c === "p" ? CP : (list[i].c === "m" ? CM : "#BFD8E8");
-      SV2.appendChild(el("circle", {cx:x, cy:y, r:14, fill:fl, opacity:0.93}));
-      SV2.appendChild(txt(x, y + 4, list[i].sym, 10, list[i].c === "w" ? "#22262B" : "#fff", 700));
-    }
-    if (M.precip) {
-      np = Math.round(M.precip(T));
-      for (i = 0; i < np; i++) {
-        SV2.appendChild(el("rect", {x:bx + 22 + i * 28, y:by + bh - 22, width:22, height:13,
-          fill:"#fff", stroke:G1, rx:2}));
-      }
-      if (np > 0) { SV2.appendChild(txt(bx + bw / 2, by + bh + 20, "白い沈殿（BaSO\u2084）", 12, G1)); }
-    }
-    SV2.appendChild(el("rect", {x:406, y:44, width:42, height:124, rx:6, fill:stCol,
-      opacity:0.75, stroke:G2}));
-    SV2.appendChild(txt(427, 186, "BTB", 12, G1));
-    SV2.appendChild(txt(427, 203, stName, 13, INK, 700));
-    yy = 58;
-    for (i = 0; i < M.species.length; i++) {
-      SV2.appendChild(txt(496, yy, M.species[i].sym, 13,
-        M.species[i].c === "p" ? CP : CM, 700, "start"));
-      SV2.appendChild(txt(602, yy, "\u00D7 " + Math.round(M.species[i].f(T)), 13,
-        "#22262B", 400, "start"));
-      yy += 27;
-    }
-    SV2.appendChild(txt(496, yy, "H\u2082O", 13, "#6C8FA6", 700, "start"));
-    SV2.appendChild(txt(602, yy, "\u00D7 " + Math.round(M.water(T)), 13, "#22262B", 400, "start"));
+  }
+  if (splash > 0) {
+    SV2.appendChild(el("ellipse", {cx:BUX, cy:sy, rx:8 + 16 * (1 - splash), ry:3,
+      fill:"none", stroke:SLA, "stroke-width":1.4, opacity:splash}));
   }
 
+  /* --- ビーカー --- */
+  SV2.appendChild(el("rect", {x:BKX, y:sy, width:BKW, height:BKY + BKH - sy,
+    fill:st[1], opacity:0.28}));
+  SV2.appendChild(el("path", {d:"M" + (BKX - 6) + " " + BKY + " L" + BKX + " " + BKY +
+    " L" + BKX + " " + (BKY + BKH) + " L" + (BKX + BKW) + " " + (BKY + BKH) +
+    " L" + (BKX + BKW) + " " + BKY + " L" + (BKX + BKW + 6) + " " + BKY,
+    fill:"none", stroke:G1, "stroke-width":2, "stroke-linejoin":"round"}));
+  SV2.appendChild(el("line", {x1:BKX, y1:sy, x2:BKX + BKW, y2:sy,
+    stroke:SLA, "stroke-width":1.4, opacity:0.8}));
+  SV2.appendChild(txt(BKX + BKW / 2, BKY + BKH + 20, M.beaker + " に加えていく", 12.5, "#444"));
+  SV2.appendChild(txt(BKX + BKW / 2, BKY + BKH + 40, M.eq, 13, INK, 700));
+
+  /* --- 粒子 --- */
+  var list = [];
+  for (i = 0; i < M.species.length; i++) {
+    n = Math.round(M.species[i].f(T));
+    for (j = 0; j < n; j++) { list.push({sym:M.species[i].sym, c:M.species[i].c}); }
+  }
+  n = Math.round(M.water(T));
+  for (j = 0; j < n; j++) { list.push({sym:"H\u2082O", c:"w"}); }
+  var cols = 5, cw = (BKW - 20) / cols;
+  var areaTop = sy + 14, areaBot = BKY + BKH - 22;
+  var maxRows = Math.max(1, Math.floor((areaBot - areaTop) / 22));
+  var rows = Math.ceil(list.length / cols);
+  var rh = (rows <= maxRows) ? 22 : (areaBot - areaTop) / maxRows;
+  var lim = Math.min(list.length, cols * maxRows);
+  for (i = 0; i < lim; i++) {
+    var r = Math.floor(i / cols), c = i % cols;
+    var px = BKX + 10 + cw * (c + 0.5), py = areaTop + rh * (r + 0.45);
+    var fl = list[i].c === "p" ? CP : (list[i].c === "m" ? CM : "#BFD8E8");
+    SV2.appendChild(el("circle", {cx:px, cy:py, r:9.6, fill:fl, opacity:0.94}));
+    SV2.appendChild(txt(px, py + 3.2, list[i].sym, 7.4,
+      list[i].c === "w" ? "#22262B" : "#fff", 700));
+  }
+  if (list.length > lim) {
+    SV2.appendChild(txt(BKX + BKW / 2, BKY + BKH - 6,
+      "ほか " + (list.length - lim) + " 個（数は右の表で）", 9.5, "#5B7E96"));
+  }
+  if (M.precip) {
+    var np = Math.round(M.precip(T));
+    for (i = 0; i < np; i++) {
+      SV2.appendChild(el("rect", {x:BKX + 14 + i * 32, y:BKY + BKH - 15, width:26, height:11,
+        fill:"#fff", stroke:G1, "stroke-width":1, rx:2}));
+    }
+    if (np > 0) {
+      SV2.appendChild(txt(BKX + BKW + 46, BKY + BKH - 6, "白い沈殿 BaSO\u2084", 11, G1));
+    }
+  }
+
+  /* --- BTB と 数 --- */
+  SV2.appendChild(el("rect", {x:322, y:120, width:46, height:150, rx:6,
+    fill:st[1], opacity:0.8, stroke:G2}));
+  SV2.appendChild(txt(345, 290, "BTB溶液", 11.5, G1));
+  SV2.appendChild(txt(345, 310, st[0], 15, INK, 700));
+
+  SV2.appendChild(txt(424, 40, "水溶液の中にあるもの", 12.5, G1, 400, "start"));
+  var yy = 76;
+  for (i = 0; i < M.species.length; i++) {
+    SV2.appendChild(el("circle", {cx:440, cy:yy - 4, r:9,
+      fill:(M.species[i].c === "p" ? CP : CM), opacity:0.94}));
+    SV2.appendChild(txt(462, yy, M.species[i].sym, 13.5,
+      M.species[i].c === "p" ? CP : CM, 700, "start"));
+    var cnt = Math.round(M.species[i].f(T));
+    SV2.appendChild(txt(548, yy, "\u00D7 " + cnt, 13.5, "#22262B", 400, "start"));
+    SV2.appendChild(el("rect", {x:592, y:yy - 10, width:Math.max(cnt, 0) * 6.4, height:11,
+      fill:(M.species[i].c === "p" ? CP : CM), opacity:0.5, rx:2}));
+    yy += 30;
+  }
+  SV2.appendChild(el("circle", {cx:440, cy:yy - 4, r:9, fill:"#BFD8E8"}));
+  SV2.appendChild(txt(462, yy, "H\u2082O", 13.5, "#5B7E96", 700, "start"));
+  SV2.appendChild(txt(548, yy, "\u00D7 " + Math.round(M.water(T)), 13.5, "#22262B", 400, "start"));
+  if (M.precip) {
+    yy += 30;
+    SV2.appendChild(el("rect", {x:432, y:yy - 12, width:16, height:9, fill:"#fff", stroke:G1}));
+    SV2.appendChild(txt(462, yy, "BaSO\u2084", 13.5, "#666", 700, "start"));
+    SV2.appendChild(txt(548, yy, "\u00D7 " + Math.round(M.precip(T)), 13.5, "#22262B", 400, "start"));
+  }
+  SV2.appendChild(el("line", {x1:424, y1:yy + 16, x2:718, y2:yy + 16, stroke:G3}));
+  SV2.appendChild(txt(424, yy + 38, "中性になるのは、加えた量が " + M.neutral + " のとき",
+    12, G1, 400, "start"));
+}
+
+function drawGraphs() {
+  var M = MODES[md], T = vol, i;
   var gc = document.getElementById("graphs");
   while (gc.firstChild) { gc.removeChild(gc.firstChild); }
   for (i = 0; i < M.species.length; i++) {
@@ -464,11 +572,21 @@ function draw2() {
       gc.appendChild(d);
     })(M.species[i]);
   }
+}
+
+function draw2() {
+  var M = MODES[md], T = vol, st = stateOf(M, T);
+  document.getElementById("kvol").innerHTML = String(T);
+  var extra = "";
+  if (M.precip && T === M.neutral) { extra = "\u3000\u25B6 イオンがないので、電流が流れない"; }
+  document.getElementById("kstate").innerHTML = st[0] + "\u3000\u2500\u2500 " + st[2] + extra;
   document.getElementById("note2").innerHTML = M.note;
   document.getElementById("ro2").innerHTML =
-    '<span class="pill" style="background:' + stCol + '33;border-color:' + stCol + '">' +
-    stName + '</span><span style="color:#444">中性になるのは、加えた量が <b>' +
+    '<span class="pill" style="background:' + st[1] + '33;border-color:' + st[1] + '">' +
+    st[0] + '</span><span style="color:#444">中性になるのは、加えた量が <b>' +
     M.neutral + '</b> のとき</span>';
+  drawVessel();
+  drawGraphs();
 }
 document.getElementById("vol").oninput = function () { vol = Number(this.value); draw2(); };
 document.getElementById("vol").onchange = function () { vol = Number(this.value); draw2(); };
@@ -481,7 +599,14 @@ document.getElementById("gonly").onclick = function () {
 document.getElementById("auto2").onclick = function () {
   autoRun = !autoRun;
   this.className = "btn" + (autoRun ? " on" : "");
-  this.innerHTML = autoRun ? "停止" : "自動で流す";
+  this.innerHTML = autoRun ? "止める" : "少しずつ加える";
+};
+document.getElementById("reset2").onclick = function () {
+  vol = 0; autoRun = false;
+  var a = document.getElementById("auto2");
+  a.className = "btn"; a.innerHTML = "少しずつ加える";
+  document.getElementById("vol").value = 0;
+  draw2();
 };
 
 (function () {
@@ -493,6 +618,7 @@ document.getElementById("auto2").onclick = function () {
       for (k = 0; k < t.length; k++) { t[k].className = "tab"; }
       this.className = "tab on";
       n = Number(this.getAttribute("data-tab"));
+      activeTab = n;
       for (k = 0; k < p.length; k++) { p[k].className = "panel" + (k === n ? " on" : ""); }
     };
   }
@@ -504,15 +630,30 @@ function loop(ts) {
   var dt = ts - last;
   if (dt < 0 || dt > 60) { dt = 33; }
   last = ts;
-  draw1(dt);
-  if (autoRun) {
-    acc += dt;
-    if (acc > 430) {
-      acc = 0;
-      vol = (vol + 1) % (MODES[md].max + 1);
-      document.getElementById("vol").value = vol;
-      draw2();
+  if (activeTab === 0) {
+    draw1(dt);
+  } else {
+    if (vol < MODES[md].max) {
+      dropT += dt * 0.0013;
+      while (dropT > 1) { dropT -= 1; splash = 1; }
     }
+    if (splash > 0) { splash -= dt * 0.0026; if (splash < 0) { splash = 0; } }
+    if (autoRun) {
+      acc += dt;
+      if (acc > 620) {
+        acc = 0;
+        if (vol < MODES[md].max) {
+          vol += 1;
+          document.getElementById("vol").value = vol;
+          draw2();
+        } else {
+          autoRun = false;
+          var a = document.getElementById("auto2");
+          a.className = "btn"; a.innerHTML = "少しずつ加える";
+        }
+      }
+    }
+    if (!gOnly) { drawVessel(); }
   }
   if (window.requestAnimationFrame) { window.requestAnimationFrame(loop); }
   else { window.setTimeout(loop, 33); }
